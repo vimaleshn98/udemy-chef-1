@@ -3,9 +3,15 @@ package 'httpd' do
 end
 ip = node['ipaddress']
 host =node['hostname']
-
-file 'var/www/html/index.html' do
-  content "<h1> Hello Chef with #{ip} and host: #{host} </h1>"
+flag = false
+template 'var/www/html/index.html' do
+  source 'index.html.erb'
+  variables({
+   :ip => node['ipaddress'], 
+   :host => host, 
+   :flag => flag
+  })
+  action :create
 end
 
 service 'httpd' do
